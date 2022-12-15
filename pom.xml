@@ -21,7 +21,7 @@
 
         
 
-        <sonar.host.url>http://35.200.204.102:9000</sonar.host.url>
+        <sonar.host.url>http://34.100.142.44:9000</sonar.host.url>
 
         <sonar.projectKey>network-spring</sonar.projectKey>
 
