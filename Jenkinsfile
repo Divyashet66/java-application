@@ -161,10 +161,7 @@ pipeline {
 			
 				awk '{print \$4}' intake.txt > extract.txt
                         """
-			IP = sh (
-        			script: 'grep -Eo "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)" extract.txt > finalout.txt && ip=$(cat finalout.txt) && aa="http://${ip}" && echo $aa',
-        			returnStdout: true
-    			).trim()
+			IP = http://34.132.115.205/
     			echo "Git committer email: ${IP}"
 		 
 	      
