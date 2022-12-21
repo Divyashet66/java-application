@@ -154,13 +154,13 @@ pipeline {
              steps {
                  script {
 		     sh 'sleep 10'
-			sh 'gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project'
-			sh 'kubectl get pods'	
-			sh 'kubectl get service java-app > intake.txt'
-			sh """
+// 			sh 'gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project'
+// 			sh 'kubectl get pods'	
+// 			sh 'kubectl get service java-app > intake.txt'
+// 			sh """
 			
-				awk '{print \$4}' intake.txt > extract.txt
-                        """
+// 				awk '{print \$4}' intake.txt > extract.txt
+//                         """
 			IP = http://34.132.115.205/
     			echo "Git committer email: ${IP}"
 		 
