@@ -169,7 +169,7 @@ pipeline {
     			).trim()
     			echo "Your IP is: ${IP}"
 		 	PIP = sh '"${IP}:8080"'
-	      
+	      		echo "Your IP with port is: ${PIP}"
 	    	     
 			 
                        scan_type = "Baseline"
