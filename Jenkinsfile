@@ -41,23 +41,23 @@ pipeline {
 		    }
 	    }
 	    
-	    stage('Build'){
+// 	    stage('Build'){
 
-            steps{
+//             steps{
 
-                sh 'mvn clean'
-            }
+//                 sh 'mvn clean'
+//             }
 
-       }
+//        }
 	    
-	    stage('Test'){
+// 	    stage('Test'){
 
-            steps{
+//             steps{
 
-                sh 'mvn test'
-            }
+//                 sh 'mvn test'
+//             }
 
-       }
+//        }
 
 //        stage('SonarQube analysis') {
 
@@ -78,41 +78,41 @@ pipeline {
 //         }
 
 
-	    stage('Build Docker Image') {
-		    steps {
-			    sh 'whoami'
-			    sh 'sudo chmod 777 /var/run/docker.sock'
+// 	    stage('Build Docker Image') {
+// 		    steps {
+// 			    sh 'whoami'
+// 			    sh 'sudo chmod 777 /var/run/docker.sock'
 			    
-			    sh 'sudo apt update'
- 			    sh 'sudo apt install software-properties-common'
-			    sh 'sudo add-apt-repository ppa:cncf-buildpacks/pack-cli'
+// 			    sh 'sudo apt update'
+//  			    sh 'sudo apt install software-properties-common'
+// 			    sh 'sudo add-apt-repository ppa:cncf-buildpacks/pack-cli'
 			    
- 				sh 'sudo  apt-get update'
- 				sh 'sudo apt-get install pack-cli'
+//  				sh 'sudo  apt-get update'
+//  				sh 'sudo apt-get install pack-cli'
 			   
-			    sh 'mvn spring-boot:build-image'
-				sh 'docker tag docker.io/library/spring-boot-complete:0.0.1-SNAPSHOT gcr.io/tech-rnd-project/java'
+// 			    sh 'mvn spring-boot:build-image'
+// 				sh 'docker tag docker.io/library/spring-boot-complete:0.0.1-SNAPSHOT gcr.io/tech-rnd-project/java'
 			    
-		    }
-	    }
+// 		    }
+// 	    }
 	    
-	    stage("Push Docker Image") {
-		    steps {
-			    script {
-				echo "Push Docker Image"
-				sh 'gcloud auth configure-docker'
-				sh "sudo docker push gcr.io/tech-rnd-project/java"
+// 	    stage("Push Docker Image") {
+// 		    steps {
+// 			    script {
+// 				echo "Push Docker Image"
+// 				sh 'gcloud auth configure-docker'
+// 				sh "sudo docker push gcr.io/tech-rnd-project/java"
 				
-				sh 'curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
+// 				sh 'curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
 
-				sh "chmod +x kubectl"
+// 				sh "chmod +x kubectl"
 
-				sh "sudo mv kubectl \$(which kubectl)"
+// 				sh "sudo mv kubectl \$(which kubectl)"
 
 				    
-			    }
-		    }
-	    }
+// 			    }
+// 		    }
+// 	    }
 	    
 	    stage('Deploy to K8s') {
 		    steps{
@@ -156,7 +156,7 @@ pipeline {
 		     sh 'sleep 10'
 			sh 'echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list'
 			sh 'curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -'
-			sh 'sudo apt update'
+			sh 'sudo apt-get -y update'
 			sh 'sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin kubectl'
 			sh 'export USE_GKE_GCLOUD_AUTH_PLUGIN=True'
 			sh 'gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project'
