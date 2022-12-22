@@ -226,9 +226,14 @@ pipeline {
     }
 	post{
         always{
-            emailext to: "divyashetbhatkal@gmail.com",
-            subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
-            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.JOB_URL}"
+            archiveArtifacts artifacts: '*.csv', onlyIfSuccessful: true
+                
+                emailext to: "divyashetbhatkal@gmail.com",
+                subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
+                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}\nMore Info can be found here: ${env.BUILD_URL}",
+                attachmentsPattern: '*.csv'
+                
+            cleanWs()
         }	
     }
 	
