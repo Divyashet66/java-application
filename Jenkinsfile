@@ -155,10 +155,10 @@ pipeline {
                  script {
 			 sh '''
 		         sleep 10
-			export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-			gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project
-			kubectl get pods	
-			kubectl get service java-app > intake.txt
+			 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+			 gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project
+			 kubectl get pods	
+			 kubectl get service java-app > intake.txt
 			
 			
 				awk '{print \$4}' intake.txt > extract.txt
@@ -167,8 +167,8 @@ pipeline {
         			script: 'grep -Eo "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)" extract.txt > finalout.txt && ip=$(cat finalout.txt) && aa="http://${ip}" && echo $aa',
         			returnStdout: true
     			).trim()
-    			echo "Git committer email: ${IP}"
-		 
+    			echo "Your IP is: ${IP}"
+		 	PIP = sh '"${IP}:8080"'
 	      
 	    	     
 			 
@@ -182,7 +182,7 @@ pipeline {
                            sh """
                                docker exec owasp \
                                zap-baseline.py \
-                               -t ${IP} \
+                               -t ${PIP} \
                                -r report.html \
                                -I
                            """
