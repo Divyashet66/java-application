@@ -161,7 +161,7 @@ pipeline {
 			
 // 				awk '{print \$4}' intake.txt > extract.txt
 //                         """
-			IP = sh ('http://34.132.115.205:8080/')
+			IP = sh ('http://34.132.115.205:8080/java-app')
     			echo "Git committer email: ${IP}"
 		 
 	      
