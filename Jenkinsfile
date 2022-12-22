@@ -227,8 +227,8 @@ pipeline {
 	post{
         always{
             emailext to: "divyashetbhatkal@gmail.com",
-            subject: "Test Email",
-            body: "Test",
+            subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
+            body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}"
             attachLog: true
         }	
     }
