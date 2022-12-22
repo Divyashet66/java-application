@@ -159,6 +159,9 @@ pipeline {
 			sh 'sudo apt-get -y update'
 			sh 'sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin kubectl'
 			sh 'export USE_GKE_GCLOUD_AUTH_PLUGIN=True'
+			sh 'gcloud auth activate-service-account 460440866465-compute@developer.gserviceaccount.com \
+          --key-file <(echo $(GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON)  | base64 -d)   
+          (echo $(GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON) | base64 -d) > $HOME/.config/gcloud/application_default_credentials.json'
 			sh 'gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project'
 			sh 'kubectl get pods'	
 			sh 'kubectl get service java-app > intake.txt'
