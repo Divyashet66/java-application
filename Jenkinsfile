@@ -155,8 +155,7 @@ pipeline {
                  script {
 		     sh 'sleep 10'
 			sh 'export USE_GKE_GCLOUD_AUTH_PLUGIN=True'
-			sh 'gcloud auth activate-service-account 460440866465-compute@developer.gserviceaccount.com \
-          --key-file <(echo $(key)  | base64 -d)'
+			sh 'gcloud auth activate-service-account 460440866465-compute@developer.gserviceaccount.com --key-file <(echo $(key)  | base64 -d)'
           		sh '(echo $(key) | base64 -d) > $HOME/.config/gcloud/application_default_credentials.json'
 			
 			sh 'gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project'
