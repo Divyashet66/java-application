@@ -132,7 +132,7 @@ pipeline {
 	    stage('Zap Installation') {
                     steps {
 				    
-			   
+			sh 'docker rm -f owasp'   
                         sh 'echo "Hello World"'
 			sh '''
 			    echo "Pulling up last OWASP ZAP container --> Start"
