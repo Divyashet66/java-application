@@ -172,7 +172,7 @@ pipeline {
 	      
 	    	     
 			 
-                       scan_type = "${params.SCAN_TYPE}"
+                       scan_type = "Baseline"
                        echo "----> scan_type: $scan_type"
 			 
 			
@@ -187,25 +187,7 @@ pipeline {
                                -I
                            """
                        }
-                       else if(scan_type == "APIS"){
-                           sh """
-                               docker exec owasp \
-                               zap-api-scan.py \
-                               -t ${IP}\
-                               -r report.html \
-                               -I
-                           """
-                       }
-                       else if(scan_type == "Full"){
-                           sh """
-                               docker exec owasp \
-                               zap-full-scan.py \
-                               -t ${IP}\
-                               //-x report.html
-                               -I
-                            """
-                           //-x report-$(date +%d-%b-%Y).xml
-                       }
+                      
                        else{
                            echo "Something went wrong..."
                        }
