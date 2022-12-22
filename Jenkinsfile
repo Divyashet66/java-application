@@ -157,7 +157,7 @@ pipeline {
 			sh 'echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list'
 			sh 'curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -'
 			sh 'sudo apt update'
-			sh 'sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin kubectl'
+			sh 'sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin kubectl'
 			sh 'export USE_GKE_GCLOUD_AUTH_PLUGIN=True'
 			sh 'gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project'
 			sh 'kubectl get pods'	
