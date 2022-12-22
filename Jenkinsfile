@@ -155,8 +155,6 @@ pipeline {
                  script {
 		     sh 'sleep 10'
 			sh 'export USE_GKE_GCLOUD_AUTH_PLUGIN=True'
-                        sh 'gcloud components install gke-gcloud-auth-plugin'
-			
 			sh 'gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project'
 			sh 'kubectl get pods'	
 			sh 'kubectl get service java-app > intake.txt'
