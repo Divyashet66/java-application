@@ -59,23 +59,23 @@ pipeline {
 
        }
 
-//        stage('SonarQube analysis') {
+       stage('SonarQube analysis') {
 
-//             steps{
+            steps{
 
-//                 withSonarQubeEnv('sonarqube-9.7.1') { 
+                withSonarQubeEnv('sonarqube-9.7.1') { 
 
-//                           //sh "sudo rm ~/.m2/repository/org/owasp/dependency-check-data/7.0/jsrepository.json"
+                          //sh "sudo rm ~/.m2/repository/org/owasp/dependency-check-data/7.0/jsrepository.json"
 
-//                     sh "mvn test -Dtest=TestControllerTests  -DfailIfNoTests=false"
+                    sh "mvn test -Dtest=TestControllerTests  -DfailIfNoTests=false"
 
-//                     sh "mvn clean install sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
+                    sh "mvn clean install sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
 
-//                 }
+                }
 
-//             }
+            }
 
-//         }
+        }
 
 
 	    stage('Build Docker Image') {
