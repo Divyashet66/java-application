@@ -1,26 +1,3 @@
- def scan_type
- def host
- def SendEmailNotification(String result) {
-  
-    // config 
-    def to = emailextrecipients([
-           requestor()
-    ])
-    
-    // set variables
-    def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${result}"
-    def content = '${JELLY_SCRIPT,template="html"}'
-
-    // send email
-    if(to != null && !to.isEmpty()) {
-        env.ForEmailPlugin = env.WORKSPACE
-        emailext mimeType: 'text/html',
-        body: '${FILE, path="/var/lib/jenkins/workspace/springboot/report.html"}',
-        subject: currentBuild.currentResult + " : " + env.JOB_NAME,
-        to: to, attachLog: true
-    }
-}
-
 pipeline {
   agent any
 
@@ -28,10 +5,10 @@ pipeline {
 		 maven 'Maven'
 	}
 	environment {
-		PROJECT_ID = 'tech-rnd-project'
-                CLUSTER_NAME = 'wordpress-cluster'
-                LOCATION = 'us-central1-a'
-                CREDENTIALS_ID = 'kubernetes'	
+		        PROJECT_ID = project_id
+				CLUSTER_NAME = cluster_name
+				LOCATION = location_of_cluster
+				CREDENTIALS_ID = credentials_id		
 	}
 	
     stages {
@@ -59,24 +36,7 @@ pipeline {
 
        }
 
-       stage('SonarQube analysis') {
-
-            steps{
-
-                withSonarQubeEnv('sonarqube-9.7.1') { 
-
-                          //sh "sudo rm ~/.m2/repository/org/owasp/dependency-check-data/7.0/jsrepository.json"
-
-                    sh "mvn test -Dtest=TestControllerTests  -DfailIfNoTests=false"
-
-                    sh "mvn clean install sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
-
-                }
-
-            }
-
-        }
-
+       
 
 	    stage('Build Docker Image') {
 		    steps {
@@ -128,81 +88,7 @@ pipeline {
 			    
 		    }
 	    }
-	    
-	    stage('Zap Installation') {
-                    steps {
-				    
-			sh 'docker rm -f owasp'   
-                        sh 'echo "Hello World"'
-			sh '''
-			    echo "Pulling up last OWASP ZAP container --> Start"
-			    docker pull owasp/zap2docker-stable
-			    
-			    echo "Starting container --> Start"
-			    docker run -dt --name owasp \
-    			    owasp/zap2docker-stable \
-    			    /bin/bash
-			    
-			    
-			    echo "Creating Workspace Inside Docker"
-			    docker exec owasp \
-    			    mkdir /zap/wrk
-			'''
-			    }
-		    }
-	    stage('Scanning target on owasp container') {
-             steps {
-                 script {
-			 sh '''
-		         sleep 10
-			 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-			 gcloud container clusters get-credentials network18-cluster --zone us-central1-a --project tech-rnd-project
-			 kubectl get pods	
-			 kubectl get service java-app > intake.txt
-			
-			
-				awk '{print \$4}' intake.txt > extract.txt
-                        '''
-			IP = sh (
-        			script: 'grep -Eo "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)" extract.txt > finalout.txt && ip=$(cat finalout.txt) && aa="http://${ip}:8080" && echo $aa',
-        			returnStdout: true
-    			).trim()
-    			echo "Your IP is: ${IP}"
-// 		 	PIP = sh ( script:'"${IP}:8080"'
-// 	      		echo "Your IP with port is: ${PIP}"
-	    	     
-			 
-                       scan_type = "Baseline"
-                       echo "----> scan_type: $scan_type"
-			 
-			
-		       
-			 
-                       if(scan_type == "Baseline"){
-                           sh """
-                               docker exec owasp \
-                               zap-baseline.py \
-                               -t ${IP} \
-                               -r report.html \
-                               -I
-                           """
-                       }
-                      
-                       else{
-                           echo "Something went wrong..."
-                       }
-			sh '''
-				docker cp owasp:/zap/wrk/report.html ${WORKSPACE}/report.html
-				echo ${WORKSPACE}
-				docker stop owasp
-                     	docker rm owasp
-			'''
-			SendEmailNotification("SUCCESSFUL")
-				    
-		  }
-	     }
-	}
-	    
+	 
     }
 	
 }
