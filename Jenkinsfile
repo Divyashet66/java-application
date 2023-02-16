@@ -5,10 +5,10 @@ pipeline {
 		 maven 'Maven'
 	}
 	environment {
-		        PROJECT_ID = project_id
-				CLUSTER_NAME = cluster_name
-				LOCATION = location_of_cluster
-				CREDENTIALS_ID = credentials_id		
+		        PROJECT_ID = "tech-rnd-project"
+		        CLUSTER_NAME = "network18-cluster"
+		        LOCATION = "us-central1-a"
+			CREDENTIALS_ID = "kubernetes"
 	}
 	
     stages {
