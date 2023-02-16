@@ -1,0 +1,10 @@
+{
+    "IP-key": "mongoIP",
+    "database-key": "database",
+    "collection-key": "collection",
+    "port-key": "PORT",
+    "IP-value": "35.207.243.107",
+    "database-value": "demo",
+    "collection-value": "data",
+    "port-value": "3000"
+  }
